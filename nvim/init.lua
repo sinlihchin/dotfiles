@@ -1,9 +1,13 @@
 require('maps') -- lua/maps.lua
+require("nvim-lsp-installer").setup {}
 require'lspconfig'.pyright.setup{}
+require'lspconfig'.terraformls.setup{}
+-- require'lspconfig'.terraform_lsp.setup{}
 require "paq" {
   "savq/paq-nvim";
 
   "neovim/nvim-lspconfig";
+  "williamboman/nvim-lsp-installer";
   "ms-jpq/coq_nvim";
   "ms-jpq/coq.artifacts";
   "ms-jpq/coq.thirdparty";
@@ -13,6 +17,7 @@ require "paq" {
   "joshdick/onedark.vim";
   { "junegunn/fzf", run = ":call fzf#install()" };
   "junegunn/fzf.vim";
+  "tpope/vim-commentary";
 
   "nvim-lua/plenary.nvim";
   "nvim-telescope/telescope.nvim";
@@ -20,11 +25,16 @@ require "paq" {
 
   "ggandor/lightspeed.nvim";
 
+  -- Indentation lines
+  "lukas-reineke/indent-blankline.nvim";
+
+  -- Tablines
+  { "akinsho/bufferline.nvim", tag = "v2." };
+
   "vim-python/python-syntax";
   "nvim-treesitter/nvim-treesitter";
   "euclidianAce/BetterLua.vim";
-  "nvim-lualine/lualine.nvim";
-  --"itchny/lightline.vim";
+  "nvim-lualine/lualine.nvim"; "kyazdani42/nvim-web-devicons"; --"itchny/lightline.vim";
 }
 -- Neovim statusline
 require('lualine').setup()
@@ -39,6 +49,29 @@ require 'nvim-treesitter.configs'.setup {
   },
 }
 
+-- Terraform syntax higlighting
+local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+parser_configs.hcl = {
+  filetype = "hcl", "terraform",
+}
+
+-- Indentation lines
+vim.opt.list = true
+vim.opt.listchars:append("space:⋅")
+
+require("indent_blankline").setup {
+    space_char_blankline = " ",
+    show_current_context = true,
+    show_current_context_start = true,
+}
+
+-- Bufferline
+vim.opt.termguicolors = true
+require("bufferline").setup{}
+
+vim.keymap.set('n', '[[', '<Cmd>:BufferLineCycleNext<CR>')
+vim.keymap.set('n', ']]', '<Cmd>:BufferLineCyclePrev<CR>')
+
 -- coq_nvim settings
 vim.g.coq_settings = { auto_start = true }
 
@@ -50,7 +83,7 @@ local set = vim.opt
 
 -- global options
 o.cursorline = true
-o.number = true
+o.relativenumber = true
 -- o.nocompatible = true
 -- o.hlsearch = true
 o.smartcase = true
@@ -58,6 +91,9 @@ o.smartindent = true
 o.background = 'dark'
 o.ttyfast = true
 o.syntax = 'on'
+o.showtabline = 2
+o.textwidth = 88
+o.colorcolumn = '88'
 
 -- Set the behavior of tab
 set.tabstop = 2
