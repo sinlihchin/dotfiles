@@ -69,8 +69,8 @@ require("indent_blankline").setup {
 vim.opt.termguicolors = true
 require("bufferline").setup{}
 
-vim.keymap.set('n', '[[', '<Cmd>:BufferLineCycleNext<CR>')
-vim.keymap.set('n', ']]', '<Cmd>:BufferLineCyclePrev<CR>')
+vim.keymap.set('n', '\n', '<Cmd>:BufferLineCycleNext<CR>')
+vim.keymap.set('n', '\b', '<Cmd>:BufferLineCyclePrev<CR>')
 
 -- coq_nvim settings
 vim.g.coq_settings = { auto_start = true }
